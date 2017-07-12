@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  HelloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SamTemplateFunction
+      Timeout: 30
+      Handler: org.rg.examples.Main::handleRequest
+      Runtime: java8
+      CodeUri: target//sam-java-template-1.0-SNAPSHOT.jar
+      Policies:
+        - AWSLambdaExecute
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /hello/{proxy+}
+            Method: any
+  ExampleApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionUri: swagger.yaml
+Outputs:
+  ExampleApi:
+    Description: API URI
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello'
+    Export:
+      Name: ExampleApi

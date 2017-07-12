@@ -1,0 +1,18 @@
+---
+swagger: 2.0
+basePath: /Prod
+info:
+  title: SamJavaTemplate
+schemes:
+- https
+paths:
+  /hello/{proxy+}:
+    any:
+      x-amazon-apigateway-auth:
+        type: none
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:[AWS_ACCOUNT_ID]:function:SamTemplateFunction/invocations
+        httpMethod: POST
+        type: aws_proxy
